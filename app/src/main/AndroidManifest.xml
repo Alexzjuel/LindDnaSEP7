@@ -9,13 +9,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LindDnaSEP7">
+
+        <activity android:name=".Battery.BatteryActivity">
+
+        </activity>
+        <activity android:name=".Gel.GelActivity">
+
+        </activity>
+        <activity android:name=".Dispensers.DispenserActivity">
+
+        </activity>
+        <activity android:name=".LoginScreen.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
         <activity
             android:name=".MainScreen.MainActivity"
             android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".FirebaseUI.NewNoteActivity"

@@ -3,16 +3,12 @@ package com.e.linddnasep7.MainScreen;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -20,7 +16,7 @@ import android.widget.Toast;
 import com.e.linddnasep7.Battery.BatteryActivity;
 import com.e.linddnasep7.Dispensers.DispenserActivity;
 import com.e.linddnasep7.FirebaseUI.Dispenser;
-import com.e.linddnasep7.FirebaseUI.DispenserAdpater;
+import com.e.linddnasep7.FirebaseUI.DispenserAdapter;
 import com.e.linddnasep7.FirebaseUI.NewNoteActivity;
 import com.e.linddnasep7.Gel.GelActivity;
 import com.e.linddnasep7.R;
@@ -29,16 +25,17 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
+
+
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference notebookRef = db.collection("Notebook");
-    private DispenserAdpater adapter;
+    private DispenserAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,14 +89,42 @@ public class MainActivity extends AppCompatActivity {
                 .setQuery(query, Dispenser.class)
                 .build();
 
-        adapter = new DispenserAdpater(options);
+        adapter = new DispenserAdapter(options);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                adapter.deleteItem(viewHolder.getAdapterPosition());
+            }
+        }).attachToRecyclerView(recyclerView);
+
+        adapter.setOnItemClickListener(new DispenserAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Dispenser dispenser = documentSnapshot.toObject(Dispenser.class);
+                String id = documentSnapshot.getId();
+                String path = documentSnapshot.getReference().getPath();
+                Toast.makeText(MainActivity.this,"Position: " + position + " ID: " + id, Toast.LENGTH_LONG).show();
+
+                //Use  this code to redirect to another activity screen
+                //Intent intent = new Intent(MainActivity.this, NewNoteActivity.class);
+                //startActivity(intent);
+            }
+        });
+
+
     }
+
 
     // when the app goes into the foreground the app will start listening
     @Override

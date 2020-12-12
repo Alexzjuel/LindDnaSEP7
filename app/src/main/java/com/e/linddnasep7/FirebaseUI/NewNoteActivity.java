@@ -31,8 +31,8 @@ public class NewNoteActivity extends AppCompatActivity {
         editTextTitle = findViewById(R.id.edit_text_title);
         editTextDescription = findViewById(R.id.edit_text_description);
         numberPickerPriority = findViewById(R.id.number_picker_priority);
-        numberPickerPriority.setMinValue(1);
-        numberPickerPriority.setMaxValue(50);
+        numberPickerPriority.setMinValue(1000);
+        numberPickerPriority.setMaxValue(1000);
     }
 
     @Override

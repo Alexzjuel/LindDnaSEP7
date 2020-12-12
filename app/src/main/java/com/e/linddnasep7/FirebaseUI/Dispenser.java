@@ -4,8 +4,6 @@ public class Dispenser {
 
     private String title;
     private String description;
-    private int gel;
-    private int battery;
     private int priority;
 
 
