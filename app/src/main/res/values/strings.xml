@@ -5,5 +5,10 @@
     <string name="battery">Battery</string>
     <string name="gel">Gel</string>
     <string name="home">Home</string>
+    <string name="functionality">Functionality</string>
+    <string name="contact_support">Contact Support</string>
+    <string name="logout">Logout</string>
+    <string name="navigation_drawer_open">Open Navigation drawer</string>
+    <string name="navigation_drawer_close">Close Navigation drawer</string>
 
 </resources>

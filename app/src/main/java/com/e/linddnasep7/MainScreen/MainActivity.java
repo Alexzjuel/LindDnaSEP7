@@ -2,13 +2,19 @@ package com.e.linddnasep7.MainScreen;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -19,6 +25,7 @@ import com.e.linddnasep7.FirebaseUI.Dispenser;
 import com.e.linddnasep7.FirebaseUI.DispenserAdapter;
 import com.e.linddnasep7.FirebaseUI.NewNoteActivity;
 import com.e.linddnasep7.Gel.GelActivity;
+import com.e.linddnasep7.LoginScreen.LoginActivity;
 import com.e.linddnasep7.R;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -37,10 +44,13 @@ public class MainActivity extends AppCompatActivity {
     private CollectionReference notebookRef = db.collection("Notebook");
     private DispenserAdapter adapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         //Nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -81,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
         setUpRecyclerView();
     }
+
+
 
     private void setUpRecyclerView() {
         Query query = notebookRef.orderBy("priority", Query.Direction.ASCENDING);
@@ -125,6 +137,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                startActivity(new Intent(getApplicationContext()
+                        , LoginActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
 
     // when the app goes into the foreground the app will start listening
     @Override
